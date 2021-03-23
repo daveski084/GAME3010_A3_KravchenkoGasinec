@@ -6,7 +6,7 @@ public class GridController : MonoBehaviour
 {
     public static GridController instance;
 
-
+   
     public List<Sprite> characters = new List<Sprite>();
     public bool IsShifting { get; set; }
 
@@ -96,6 +96,79 @@ public class GridController : MonoBehaviour
         }
         //SetUpCoverGrid();
     }
+
+    public IEnumerator FindNullTiles()
+    {
+        for (int x = 0; x < width; x++)
+        {
+            for (int y = 0; y < height; y++)
+            {
+                if (gridArray[x, y].GetComponent<SpriteRenderer>().sprite == null)
+                {
+                    yield return StartCoroutine(ShiftTilesDown(x, y));
+                    break;
+                }
+            }
+        }
+        for (int x = 0; x < width; x++)
+        {
+            for (int y = 0; y < height; y++)
+            {
+                gridArray[x, y].GetComponent<Tile>().ClearAllMatches();
+            }
+        }
+    }
+
+    private IEnumerator ShiftTilesDown(int x, int yStart, float shiftDelay = .03f)
+    {
+        IsShifting = true;
+        List<SpriteRenderer> renders = new List<SpriteRenderer>();
+        int nullCount = 0;
+
+        for (int y = yStart; y < height; y++)
+        {  // 1
+            SpriteRenderer render = gridArray[x, y].GetComponent<SpriteRenderer>();
+            if (render.sprite == null)
+            { // 2
+                nullCount++;
+            }
+            renders.Add(render);
+        }
+
+        for (int i = 0; i < nullCount; i++)
+        { // 3
+            yield return new WaitForSeconds(shiftDelay);// 4
+            for (int k = 0; k < renders.Count - 1; k++)
+            { // 5
+                renders[k].sprite = renders[k + 1].sprite;
+                renders[k + 1].sprite = GetNewSprite(x, height - 1); // 6
+            }
+        }
+        IsShifting = false;
+    }
+
+    private Sprite GetNewSprite(int x, int y)
+    {
+        List<Sprite> possibleCharacters = new List<Sprite>();
+        possibleCharacters.AddRange(characters);
+
+        if (x > 0)
+        {
+            possibleCharacters.Remove(gridArray[x - 1, y].GetComponent<SpriteRenderer>().sprite);
+        }
+        if (x < width - 1)
+        {
+            possibleCharacters.Remove(gridArray[x + 1, y].GetComponent<SpriteRenderer>().sprite);
+        }
+        if (y > 0)
+        {
+            possibleCharacters.Remove(gridArray[x, y - 1].GetComponent<SpriteRenderer>().sprite);
+        }
+
+        return possibleCharacters[Random.Range(0, possibleCharacters.Count)];
+    }
+
+
     //void SetRandSpot()
     //{
     //    int tempInt = Random.Range(0, width * height - 1);
