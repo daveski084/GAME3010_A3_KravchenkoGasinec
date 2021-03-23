@@ -40,15 +40,22 @@ public class Tile : MonoBehaviour
         {
             if (previousSelected == null)
             { 
-                Select();
-                
+                Select();  
             }
-                else
+            else
+            {
+                if (GetAllAdjacentTiles().Contains(previousSelected.gameObject))
                 {
                     SwapSprite(previousSelected.render);
                     previousSelected.DeSelect();
                 }
-            
+                else
+                {
+                    previousSelected.GetComponent<Tile>().DeSelect();
+                    Select();
+                }
+            }
+
         }
     }
 
@@ -86,6 +93,7 @@ public class Tile : MonoBehaviour
         RaycastHit2D hit = Physics2D.Raycast(transform.position, castDir);
         if (hit.collider != null)
         {
+            Debug.Log(hit.collider.gameObject.name.ToString());
             return hit.collider.gameObject;
         }
         return null;
@@ -100,50 +108,50 @@ public class Tile : MonoBehaviour
         return adjacentTiles;
     }
 
-    private List<GameObject> FindMatch(Vector2 castDir)
-    { // 1
-        List<GameObject> matchingTiles = new List<GameObject>(); // 2
-        RaycastHit2D hit = Physics2D.Raycast(transform.position, castDir); // 3
-        while (hit.collider != null && hit.collider.GetComponent<SpriteRenderer>().sprite == render.sprite)
-        { // 4
-            matchingTiles.Add(hit.collider.gameObject);
-            hit = Physics2D.Raycast(hit.collider.transform.position, castDir);
-        }
-        return matchingTiles; // 5
-    }
+    //private List<GameObject> FindMatch(Vector2 castDir)
+    //{ // 1
+    //    List<GameObject> matchingTiles = new List<GameObject>(); // 2
+    //    RaycastHit2D hit = Physics2D.Raycast(transform.position, castDir); // 3
+    //    while (hit.collider != null && hit.collider.GetComponent<SpriteRenderer>().sprite == render.sprite)
+    //    { // 4
+    //        matchingTiles.Add(hit.collider.gameObject);
+    //        hit = Physics2D.Raycast(hit.collider.transform.position, castDir);
+    //    }
+    //    return matchingTiles; // 5
+    //}
 
-    private void ClearMatch(Vector2[] paths) // 1
-    {
-        List<GameObject> matchingTiles = new List<GameObject>(); // 2
-        for (int i = 0; i < paths.Length; i++) // 3
-        {
-            matchingTiles.AddRange(FindMatch(paths[i]));
-        }
-        if (matchingTiles.Count >= 2) // 4
-        {
-            for (int i = 0; i < matchingTiles.Count; i++) // 5
-            {
-                matchingTiles[i].GetComponent<SpriteRenderer>().sprite = null;
-            }
-            matchFound = true; // 6
-        }
-    }
+    //private void ClearMatch(Vector2[] paths) // 1
+    //{
+    //    List<GameObject> matchingTiles = new List<GameObject>(); // 2
+    //    for (int i = 0; i < paths.Length; i++) // 3
+    //    {
+    //        matchingTiles.AddRange(FindMatch(paths[i]));
+    //    }
+    //    if (matchingTiles.Count >= 2) // 4
+    //    {
+    //        for (int i = 0; i < matchingTiles.Count; i++) // 5
+    //        {
+    //            matchingTiles[i].GetComponent<SpriteRenderer>().sprite = null;
+    //        }
+    //        matchFound = true; // 6
+    //    }
+    //}
 
 
-    public void ClearAllMatches()
-    {
-        if (render.sprite == null)
-            return;
+    //public void ClearAllMatches()
+    //{
+    //    if (render.sprite == null)
+    //        return;
 
-        ClearMatch(new Vector2[2] { Vector2.left, Vector2.right });
-        ClearMatch(new Vector2[2] { Vector2.up, Vector2.down });
-        if (matchFound)
-        {
-            render.sprite = null;
-            matchFound = false;
-            //SFXManager.instance.PlaySFX(Clip.Clear);
-        }
-    }
+    //    ClearMatch(new Vector2[2] { Vector2.left, Vector2.right });
+    //    ClearMatch(new Vector2[2] { Vector2.up, Vector2.down });
+    //    if (matchFound)
+    //    {
+    //        render.sprite = null;
+    //        matchFound = false;
+    //        //SFXManager.instance.PlaySFX(Clip.Clear);
+    //    }
+    //}
 
 
 }

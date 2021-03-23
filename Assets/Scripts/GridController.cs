@@ -62,7 +62,7 @@ public class GridController : MonoBehaviour
             {
                 for (int y = 0; y < gridArray.GetLength(1); y++)
                 {
-                    GameObject temp = Instantiate(tilePrefab, new Vector3((x - (height / 2) + 0.5f) * 0.5f, (y - (width / 2) + 0.5f) * 0.5f, 0), Quaternion.identity);
+                    GameObject temp = Instantiate(tilePrefab, new Vector3((x - (height / 2) + 0.5f) , (y - (width / 2) + 0.5f) , 0), Quaternion.identity);
 
                     gridArray[x, y] = temp.GetComponent<Tile>();
                     gridArray[x, y].id = counter;
