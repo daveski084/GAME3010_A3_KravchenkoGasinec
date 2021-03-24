@@ -29,7 +29,7 @@ public class Tile : MonoBehaviour
 
     void OnMouseDown()
     {
-        if(GameManager.instance.searchNum < 1)
+        if(GameManager.instance.searchNum < 1 || GameManager.instance.timeLeft < 0.1f)
         {
             return;
         }

@@ -9,11 +9,11 @@ public class ResourceCounterTextBehaviour : MonoBehaviour
     private void Start()
     {
         resourceCounter = GetComponent<Text>();
-        resourceCounter.text = "Gathered Resources: ";
+        resourceCounter.text = "Score: ";
     }
 
     public void UpdateCounter(int newNum)
     {
-        resourceCounter.text = "Gathered Resources: " + newNum.ToString();
+        resourceCounter.text = "Score: " + newNum.ToString();
     }
 }

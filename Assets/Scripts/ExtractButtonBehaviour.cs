@@ -10,12 +10,12 @@ public class ExtractButtonBehaviour : MonoBehaviour
     private void Start()
     {
         moveCounter = GetComponent<Text>();
-        moveCounter.text = "Extractions: ";
+        moveCounter.text = "Time left: ";
     }
 
-    public void UpdateCounter(int newNum)
+    public void UpdateCounter(float newNum)
     {
-        moveCounter.text = "Extractions: " + newNum.ToString();
+        moveCounter.text = "Time left: " + newNum.ToString();
     }
 
 }
