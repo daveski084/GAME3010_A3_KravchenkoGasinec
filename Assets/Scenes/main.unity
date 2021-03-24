@@ -170,13 +170,11 @@ MonoBehaviour:
   endCanvas: {fileID: 932913015}
   canScan: 1
   canExtract: 1
-  searchCounter: {fileID: 970277395}
+  movesNumber: {fileID: 970277395}
   extractCounter: {fileID: 2098484901}
   resourceCounter: {fileID: 292541534}
   resourcesCounterEnd: {fileID: 1103639117}
-  searchNum: 6
   extractNum: 3
-  resourcesGathered: 0
   canSwitchScene: 0
 --- !u!1 &292541534
 GameObject:
@@ -342,7 +340,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &445834432
 RectTransform:
   m_ObjectHideFlags: 0

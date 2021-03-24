@@ -5,22 +5,28 @@ using UnityEngine.UI;
 
 public class GameManager : MonoBehaviour
 {
+    public static GameManager instance;
+
+
     public Canvas gameCanvas;
     public Canvas endCanvas;
 
     public bool canScan;
     public bool canExtract;
-    public GameObject searchCounter;
+    public GameObject movesNumber; //this is going to be the number for showing how many moves left
     public GameObject extractCounter;
     public GameObject resourceCounter;
     public GameObject resourcesCounterEnd;
-    public int searchNum;
+
+    public int searchNum { get; set; }
+
     public int extractNum;
-    public int resourcesGathered;
+    public int resourcesGathered { get; set; }
 
     public bool canSwitchScene;
     private void Awake()
     {
+        instance = GetComponent<GameManager>();
         canExtract = true;
         canScan = false;
         searchNum = 6;
@@ -29,6 +35,8 @@ public class GameManager : MonoBehaviour
         StartNewGameSceneSwitch();
     }
 
+
+    
 
     void Start()
     {
@@ -49,14 +57,11 @@ public class GameManager : MonoBehaviour
 
     void Update()
     {
-
         resourceCounter.GetComponent<ResourceCounterTextBehaviour>().UpdateCounter(resourcesGathered);
-       
-
 
         extractCounter.GetComponent<ExtractButtonBehaviour>().UpdateCounter(extractNum);
-    
-        searchCounter.GetComponent<MoveCounterBehaviour>().UpdateCounter(searchNum);
+
+        movesNumber.GetComponent<MoveCounterBehaviour>().UpdateCounter(searchNum);
 
 
 

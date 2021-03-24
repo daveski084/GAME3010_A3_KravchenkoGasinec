@@ -10,12 +10,12 @@ public class MoveCounterBehaviour : MonoBehaviour
     private void Start()
     {
         moveCounter = GetComponent<Text>();
-        moveCounter.text = "Searches: ";
+        moveCounter.text = "Moves left: ";
     }
 
     public void UpdateCounter(int newNum)
     {
-        moveCounter.text = "Searches: " + newNum.ToString();
+        moveCounter.text = "Moves Left: " + newNum.ToString();
     }
 
 }

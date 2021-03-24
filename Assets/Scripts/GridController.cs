@@ -47,8 +47,9 @@ public class GridController : MonoBehaviour
             {
                 for (int y = 0; y < gridArray.GetLength(1); y++)
                 {
-                    //Destroy(gridArray[x, y].tile);
+                    Destroy(gridArray[x, y].gameObject);
                     gridArray[x, y] = null;
+
                 }
             }
             gridArray = null;
@@ -77,8 +78,8 @@ public class GridController : MonoBehaviour
                     possibleCharacters.Remove(previousLeft[y]); 
                     possibleCharacters.Remove(previousBelow);
 
-
-                    Sprite newSprite = possibleCharacters[Random.Range(0, possibleCharacters.Count)];
+                temp.transform.parent = transform; // 1
+                Sprite newSprite = possibleCharacters[Random.Range(0, possibleCharacters.Count)];
                     temp.GetComponent<SpriteRenderer>().sprite = newSprite;
 
                     previousLeft[y] = newSprite;
@@ -87,14 +88,6 @@ public class GridController : MonoBehaviour
 
                 }
             }
-
-
-        for(int i = 0; i < (height*width)/51.2f;i++)
-        {
-            // SetRandSpot();
-            //FillOutTiles(resourcesCentre);
-        }
-        //SetUpCoverGrid();
     }
 
     public IEnumerator FindNullTiles()
@@ -126,22 +119,22 @@ public class GridController : MonoBehaviour
         int nullCount = 0;
 
         for (int y = yStart; y < height; y++)
-        {  // 1
+        {  
             SpriteRenderer render = gridArray[x, y].GetComponent<SpriteRenderer>();
             if (render.sprite == null)
-            { // 2
+            { 
                 nullCount++;
             }
             renders.Add(render);
         }
 
         for (int i = 0; i < nullCount; i++)
-        { // 3
-            yield return new WaitForSeconds(shiftDelay);// 4
+        { 
+            yield return new WaitForSeconds(shiftDelay);
             for (int k = 0; k < renders.Count - 1; k++)
-            { // 5
+            { 
                 renders[k].sprite = renders[k + 1].sprite;
-                renders[k + 1].sprite = GetNewSprite(x, height - 1); // 6
+                renders[k + 1].sprite = GetNewSprite(x, height - 1); 
             }
         }
         IsShifting = false;
@@ -167,99 +160,5 @@ public class GridController : MonoBehaviour
 
         return possibleCharacters[Random.Range(0, possibleCharacters.Count)];
     }
-
-
-    //void SetRandSpot()
-    //{
-    //    int tempInt = Random.Range(0, width * height - 1);
-
-    //    for (int x = 0; x < gridArray.GetLength(0); x++)
-    //    {
-    //        for (int y = 0; y < gridArray.GetLength(1); y++)
-    //        {
-    //            if (gridArray[x, y].id == tempInt)
-    //            {
-    //                var tileRenderer = gridArray[x, y].tile.GetComponent<Renderer>();
-    //                tileRenderer.material.SetColor("_Color", new Color(0,1,0,1));
-
-
-    //                gridArray[x, y].intensity = 100;
-    //                gridArray[x, y].hasResources = true;
-    //                gridArray[x, y].x = x;
-    //                gridArray[x, y].y = y;
-
-    //                resourcesCentre = gridArray[x, y];
-    //            }
-    //        }
-    //    }
-    //}
-
-    //void FillOutTiles(Tile tile)
-    //{
-
-    //    for (int x = 0; x < gridArray.GetLength(0); x++)
-    //    {
-    //        for (int y = 0; y < gridArray.GetLength(1); y++)
-    //        {
-    //            if(!gridArray[x,y].hasResources)
-    //            {
-    //                gridArray[x, y].intensity += 100 / (Mathf.Abs(tile.x - x) + Mathf.Abs(tile.y - y)) / 2;
-
-
-    //                var tileRenderer = gridArray[x, y].tile.GetComponent<Renderer>();
-
-    //                Color currentColor = gridArray[x, y].GetComponent<Renderer>().material.GetColor("_Color");
-
-    //                float currR = gridArray[x, y].GetComponent<Renderer>().material.GetColor("_Color").r;
-    //                float currG = gridArray[x, y].GetComponent<Renderer>().material.GetColor("_Color").g;
-    //                float currB = gridArray[x, y].GetComponent<Renderer>().material.GetColor("_Color").b;
-
-
-    //                float tempR = 1.0f / (Mathf.Abs(tile.x - x) + Mathf.Abs(tile.y - y)) / 2;
-    //                float tempG = 0;
-    //                float tempB = 1.0f / (Mathf.Abs(tile.x - x) + Mathf.Abs(tile.y - y)) / 2;
-
-    //                tileRenderer.material.SetColor("_Color", new Color(currR - tempR, currG - tempG, currB - tempB));
-    //            }
-
-    //        }
-    //    }
-
-    //}
-    //public void SetUpCoverGrid()
-    //{
-    //    if (coverTileGrid != null)
-    //    {
-    //        for (int x = 0; x < coverTileGrid.GetLength(0); x++)
-    //        {
-    //            for (int y = 0; y < coverTileGrid.GetLength(1); y++)
-    //            {
-    //                Destroy(coverTileGrid[x, y].tile);
-    //                coverTileGrid[x, y] = null;
-    //            }
-    //        }
-    //        coverTileGrid = null;
-    //    }
-
-
-    //    coverTileGrid = new CoverTile[width, height];
-
-    //    int counter = 0;
-
-    //    for (int x = 0; x < coverTileGrid.GetLength(0); x++)
-    //    {
-    //        for (int y = 0; y < coverTileGrid.GetLength(1); y++)
-    //        {
-
-    //            GameObject temp = Instantiate(coverTile, new Vector3((x - (height / 2) + 0.5f)*0.5f, (y - (width / 2) + 0.5f) * 0.5f, 0), Quaternion.identity);
-    //            coverTileGrid[x, y] = temp.GetComponent<CoverTile>();
-    //            coverTileGrid[x, y].id = counter;
-    //            counter++;
-
-    //            coverTileGrid[x, y].x = x;
-    //            coverTileGrid[x, y].y = y;
-    //        }
-    //    }
-    //}
 }
 
