@@ -4,6 +4,7 @@ using UnityEngine;
 using UnityEngine.UI;
 public class ResourceCounterTextBehaviour : MonoBehaviour
 {
+    public static int scoreNum;
     Text resourceCounter;
 
     private void Start()
@@ -12,8 +13,13 @@ public class ResourceCounterTextBehaviour : MonoBehaviour
         resourceCounter.text = "Score: ";
     }
 
-    public void UpdateCounter(int newNum)
+    public void UpdateCounter(int newNum) // deprecated
     {
         resourceCounter.text = "Score: " + newNum.ToString();
+    }
+
+    private void Update()
+    {
+        resourceCounter.text = "Score: " + scoreNum.ToString();
     }
 }

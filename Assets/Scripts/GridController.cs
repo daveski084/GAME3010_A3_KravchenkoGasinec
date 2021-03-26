@@ -6,7 +6,6 @@ public class GridController : MonoBehaviour
 {
     public static GridController instance;
 
-   
     public List<Sprite> characters = new List<Sprite>();
     public bool IsShifting { get; set; }
 
@@ -78,13 +77,12 @@ public class GridController : MonoBehaviour
                     possibleCharacters.Remove(previousLeft[y]); 
                     possibleCharacters.Remove(previousBelow);
 
-                temp.transform.parent = transform; // 1
-                Sprite newSprite = possibleCharacters[Random.Range(0, possibleCharacters.Count)];
+                    temp.transform.parent = transform; // 1
+                    Sprite newSprite = possibleCharacters[Random.Range(0, possibleCharacters.Count)];
                     temp.GetComponent<SpriteRenderer>().sprite = newSprite;
 
                     previousLeft[y] = newSprite;
                     previousBelow = newSprite;
-
 
                 }
             }

@@ -11,25 +11,27 @@ public class Tile : MonoBehaviour
     public int intensity = 0;
     public bool hasResources = false;
     public bool isSelected;
+    public static int difficulty;
 
     private static Color selectedColor = new Color(0.5f, 0.5f, 0.5f, 1.0f);
     private SpriteRenderer render;
     private static Tile previousSelected;
     private Vector2[] adjacentDirections = new Vector2[] { Vector2.up, Vector2.down, Vector2.left, Vector2.right };
-
     private bool matchFound = false;
+    [SerializeField] private AudioClip matchSound, clickSound;
+    private AudioSource audioSource;
 
 
     private void Awake()
     {
         render = GetComponent<SpriteRenderer>();
-       
+        audioSource = GetComponent<AudioSource>();
     }
 
 
     void OnMouseDown()
     {
-        if(GameManager.instance.searchNum < 1 || GameManager.instance.timeLeft < 0.1f)
+        if(GameManager.instance.movesLeft < 1 || GameManager.instance.timeLeft < 0.1f)
         {
             return;
         }
@@ -39,9 +41,6 @@ public class Tile : MonoBehaviour
             return;
         }
 
-    
-
-
         if (isSelected)
         { 
             DeSelect();
@@ -50,13 +49,14 @@ public class Tile : MonoBehaviour
         {
             if (previousSelected == null)
             { 
-                Select();  
+                Select();
             }
             else
             {
                 if (GetAllAdjacentTiles().Contains(previousSelected.gameObject))
                 {
-                    GameManager.instance.searchNum--;
+                    GameManager.instance.movesLeft--;
+                    GameManager.moves--;
                     SwapSprite(previousSelected.render);
                     previousSelected.ClearAllMatches();
                     previousSelected.DeSelect();
@@ -91,7 +91,6 @@ public class Tile : MonoBehaviour
     { 
         if (render.sprite == render2.sprite)
         {
-            
             return;
         }
         
@@ -139,9 +138,10 @@ public class Tile : MonoBehaviour
         {
             matchingTiles.AddRange(FindMatch(paths[i]));
         }
-        if (matchingTiles.Count >= 2) 
+        if (matchingTiles.Count >= difficulty) // 
         {
             GameManager.instance.resourcesGathered += (matchingTiles.Count + 1);
+            ResourceCounterTextBehaviour.scoreNum += (matchingTiles.Count + 1);
 
             for (int i = 0; i < matchingTiles.Count; i++) 
             {
@@ -162,12 +162,16 @@ public class Tile : MonoBehaviour
         if (matchFound)
         {
             render.sprite = null;
-            
+            PlayAudioClip(matchSound);
             matchFound = false;
             StopCoroutine(GridController.instance.FindNullTiles());
             StartCoroutine(GridController.instance.FindNullTiles());
         }
     }
 
-
+    void PlayAudioClip(AudioClip clip)
+    {
+        audioSource.clip = clip;
+        audioSource.Play();
+    }
 }

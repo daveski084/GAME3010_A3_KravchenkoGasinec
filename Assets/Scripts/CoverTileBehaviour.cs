@@ -23,7 +23,6 @@ public class CoverTileBehaviour : MonoBehaviour
 
     void OnMouseDown()
     {
-        Debug.Log("smth happens");
         if(gameManager.GetComponent<GameManager>().canScan)
         {
             Destroy(gameObject);
